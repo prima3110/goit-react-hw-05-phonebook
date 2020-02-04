@@ -1,0 +1,25 @@
+.contactBlock {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact {
+  margin: 0;
+  flex: 1 0 auto;
+}
+
+.button {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #b3b3b3;
+  outline: 0;
+  color: rgb(255, 44, 44);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.button:active {
+  background-color: #2684ff;
+}
