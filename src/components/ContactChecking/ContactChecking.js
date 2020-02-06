@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactChecking.module.css';
 
-const ContactChecking = ({ notification }) => (
-  <div className={styles.div}>{notification}</div>
+const ContactChecking = ({ notificationText }) => (
+  <div className={styles.div}>{notificationText}</div>
 );
 
 ContactChecking.propTypes = {
-  notification: PropTypes.string.isRequired,
+  notificationText: PropTypes.string.isRequired,
 };
 
 export default ContactChecking;

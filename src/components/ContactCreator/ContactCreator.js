@@ -53,7 +53,7 @@ export default class ContactCreator extends Component {
             <input
               id="number"
               className={styles.input}
-              type="text"
+              type="number"
               name="number"
               value={number}
               onChange={this.handleChange}

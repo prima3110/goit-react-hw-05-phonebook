@@ -21,8 +21,8 @@ export default class Phonebook extends Component {
   state = {
     contacts: [],
     filter: '',
-    flag: false,
-    notification: '',
+    notification: false,
+    notificationText: '',
   };
 
   componentDidMount() {
@@ -44,49 +44,37 @@ export default class Phonebook extends Component {
     const existContact = contacts.find(
       contactInPhonebook => contactInPhonebook.name === contact.name,
     );
-    const phoneNumberSplitted = contact.number.split('');
-    const findOnlyNumbers = phoneNumberSplitted.filter(
-      el => +el || el === '-' || el === '+' || el === ' ' || el === '0',
-    );
     if (existContact) {
       this.setState({
-        flag: true,
-        notification: `Contact ${contact.name} is already exists in your phonebook!`,
+        notification: true,
+        notificationText: `Contact ${contact.name} is already exists in your phonebook!`,
       });
       setTimeout(() => {
         this.setState({
-          flag: false,
+          notification: false,
         });
       }, 2000);
-    } else if (contact.name.trim() === '' || contact.number.trim() === '') {
-      this.setState({
-        flag: true,
-        notification: 'Please, fill all fields!',
-      });
-      setTimeout(() => {
-        this.setState({
-          flag: false,
-        });
-      }, 2000);
-    } else if (phoneNumberSplitted.length !== findOnlyNumbers.length) {
-      this.setState({
-        flag: true,
-        notification: 'You should enter right number format!',
-      });
-      setTimeout(() => {
-        this.setState({
-          flag: false,
-        });
-      }, 2000);
-    } else {
-      const contactToAdd = {
-        ...contact,
-        id: shortid.generate(),
-      };
-      this.setState(prevState => ({
-        contacts: [...prevState.contacts, contactToAdd],
-      }));
+      return;
     }
+    if (contact.name.trim() === '' || contact.number.trim() === '') {
+      this.setState({
+        notification: true,
+        notificationText: 'Please, fill all fields!',
+      });
+      setTimeout(() => {
+        this.setState({
+          notification: false,
+        });
+      }, 2000);
+      return;
+    }
+    const contactToAdd = {
+      ...contact,
+      id: shortid.generate(),
+    };
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, contactToAdd],
+    }));
   };
 
   changeFilter = e => {
@@ -100,7 +88,7 @@ export default class Phonebook extends Component {
   };
 
   render() {
-    const { contacts, filter, notification, flag } = this.state;
+    const { contacts, filter, notificationText, notification } = this.state;
     const filteredContacts = filterContacts(contacts, filter);
     return (
       <div>
@@ -122,12 +110,12 @@ export default class Phonebook extends Component {
           onDeleteContact={this.deleteContact}
         />
         <CSSTransition
-          in={flag}
+          in={notification}
           timeout={2500}
           classNames={slideTransition}
           unmountOnExit
         >
-          <ContactChecking notification={notification} />
+          <ContactChecking notificationText={notificationText} />
         </CSSTransition>
       </div>
     );
